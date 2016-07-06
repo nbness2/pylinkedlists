@@ -1,7 +1,8 @@
 class Reference:
-    def __init__(self, data, next_ref):
+    def __init__(self, data, next_ref, last_ref=None):
         self.data = data
         self.next_ref = next_ref
+        self.last_ref = last_ref
 
     def __str__(self):
         return str(self.data)
@@ -66,6 +67,7 @@ class SingleLinkedList:
 
     def append(self, data):
         new_ref = Reference(data, None)
+        del new_ref.last_ref
         if self.head is None:
             self.head = self.end = new_ref
         else:
