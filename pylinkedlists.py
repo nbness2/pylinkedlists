@@ -44,7 +44,25 @@ class SingleLinkedList:
         while current_ref:
             length += 1
             current_ref = current_ref.next_ref
+            print(length)
+            try:
+                if current_ref.isend:
+                    break
+            except AttributeError:
+                pass
         return length
+
+    def __iter__(self):
+        self.max = len(self)
+        self.current = 0
+        return self
+
+    def __next__(self):
+        if self.current == self.max:
+            raise StopIteration
+        else:
+            self.current += 1
+            return self[self.current-1]
 
     def __getitem__(self, item):
         if type(item) != int:
@@ -196,6 +214,11 @@ class DoubleLinkedList(SingleLinkedList):
                 else:
                     current_ref = current_ref.last_ref
                 i += 1
+            try:
+                if current_ref.isend:
+                    break
+            except AttributeError:
+                pass
 
     def _append(self, data, left=False):
         new_ref = Reference(data, None)
@@ -242,3 +265,23 @@ class DoubleLinkedList(SingleLinkedList):
 
     def popleft(self):
         return self._pop(0)
+
+
+class CircularLinkedList(DoubleLinkedList):
+    structname = 'circular linked list'
+
+    def __init__(self, size=None):
+        DoubleLinkedList.__init__(self, (None for _ in range(size)))
+        self.end.next_ref = self.head
+        self.end.isend = True
+        if size <= 0:
+            raise ValueError('Must have a size greater than 0')
+        self.size = size
+
+    def __len__(self):
+        return self.size
+
+cll = CircularLinkedList(25)
+print(cll[5])
+cll.append(4)
+print(len(cll))
